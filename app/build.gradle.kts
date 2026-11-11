@@ -14,7 +14,10 @@ android {
         versionCode = 4
         versionName = "0.4.0"
         externalNativeBuild {
-            cmake { cppFlags += listOf("-std=c++20", "-O2") }
+            cmake {
+                cppFlags += listOf("-std=c++20", "-O2")
+                arguments += listOf("-DANDROID_STL=c++_shared")
+            }
         }
     }
 
