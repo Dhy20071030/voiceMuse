@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22.1)
 project(voicemuse_engine LANGUAGES CXX)
 find_package(oboe REQUIRED CONFIG)
-add_library(voicemuse SHARED native-lib.cpp audio_engine.cpp)
+add_library(voicemuse SHARED native-lib.cpp audio_engine.cpp dsp_processor.cpp)
 target_compile_features(voicemuse PRIVATE cxx_std_20)
 target_compile_options(voicemuse PRIVATE -Wall -Wextra -Werror=return-type)
 target_link_libraries(voicemuse PRIVATE oboe log android)
