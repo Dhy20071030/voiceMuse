@@ -13,20 +13,18 @@ android {
         targetSdk = 35
         versionCode = 4
         versionName = "0.4.0"
-
         externalNativeBuild {
-            cmake {
-                cppFlags += listOf("-std=c++20", "-O2")
-            }
+            cmake { cppFlags += listOf("-std=c++20", "-O2") }
         }
     }
 
-    buildFeatures { buildConfig = true }
+    buildFeatures {
+        buildConfig = true
+        prefab = true
+    }
 
     buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
+        release { isMinifyEnabled = false }
     }
 
     externalNativeBuild {
@@ -36,15 +34,10 @@ android {
         }
     }
 
-    buildFeatures {
-        prefab = true
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
     kotlinOptions { jvmTarget = "17" }
 }
 
