@@ -99,11 +99,13 @@ oboe::DataCallbackResult AudioEngine::onAudioReady(oboe::AudioStream* stream, vo
     uint32_t read = readFrame_.load(std::memory_order_relaxed);
     const uint32_t write = writeFrame_.load(std::memory_order_acquire);
     const int32_t channels = stream->getChannelCount();
+    const float rate = static_cast<float>(stream->getSampleRate());
     uint32_t missing = 0;
     for (int32_t i = 0; i < frames; ++i) {
         float sample = 0.0f;
         if (read != write) { sample = ring_[read]; read = (read + 1U) % capacity; }
         else ++missing;
+        sample = dsp_.process(sample, rate);
         for (int32_t ch = 0; ch < channels; ++ch) output[i * channels + ch] = sample;
     }
     if (missing) underruns_.fetch_add(missing, std::memory_order_relaxed);
