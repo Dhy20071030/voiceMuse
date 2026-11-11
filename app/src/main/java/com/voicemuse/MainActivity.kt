@@ -144,7 +144,7 @@ class MainActivity : Activity() {
         if (requestCode == 1001) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) startEngine()
             else engineStatus.text = "音频引擎：未获得麦克风权限"
-        } else if (requestCode == 1002) {
+        } else if (requestCode == 1002 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             refreshOutputDevices()
         }
     }
