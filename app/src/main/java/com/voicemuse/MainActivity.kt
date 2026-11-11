@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import android.os.Bundle
+import android.os.Build
 import android.graphics.Color
 import android.view.Gravity
 import android.widget.Button
@@ -73,6 +74,9 @@ class MainActivity : Activity() {
     }
 
     private fun refreshOutputDevices() {
+        if (Build.VERSION.SDK_INT >= 31 && checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.BLUETOOTH_CONNECT), 1002)
+        }
         try {
             val outputs = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS).filter { isSupportedOutput(it) }
             if (outputs.isEmpty()) body.addView(label("系统暂未报告可用输出设备。", 12, muted, false))
@@ -140,6 +144,8 @@ class MainActivity : Activity() {
         if (requestCode == 1001) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) startEngine()
             else engineStatus.text = "音频引擎：未获得麦克风权限"
+        } else if (requestCode == 1002) {
+            refreshOutputDevices()
         }
     }
     override fun onDestroy() { stopEngine(); super.onDestroy() }
